@@ -18,8 +18,8 @@ const userSchima = new mongoose.Schema({
        
     },
 
-},{timeStamp:true});
+},{timeStamps:true});
 
  const User = mongoose.model("User", userSchima)
- 
+
  export default User;

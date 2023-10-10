@@ -1,12 +1,9 @@
 import { errorHandler } from "../utils/error.js"
 import bcryptjs from 'bcryptjs'
 import User from '../models/user-model.js'
+import Listing from '../models/listing-model.js'
 
-export const test = (req ,res)=>{
-    res.json({
-        message:"hello world !!"
-    })
-}
+
 
 export const updateUser = async (req, res ,next)=>{
     if(req.user.id !== req.params.id) return next(errorHandler(401, "you can only update your own account"))
@@ -44,4 +41,17 @@ export const deleteUser = async(req, res, next)=>{
     
   }
 
+}
+
+export const getUserListings = async (req, res , next)=>{
+  if (req.user.id === req.params.id){
+    try {
+      const listings =  await  Listing.find({userRef: req.params.id})
+      res.status(201).json(listings)
+    } catch (error) {
+      next(error) 
+    }
+  }else{
+    return next(errorHandler(401, "you can only view your own listings"))
+  }
 }
